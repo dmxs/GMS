@@ -1,0 +1,3 @@
+[submodule "GMS-proto"]
+	path = GMS-proto
+	url = git@github.com:dmxs/GMS-proto.git

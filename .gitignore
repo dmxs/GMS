@@ -1,0 +1,21 @@
+*.exe
+
+# log
+*.log
+
+# IDE
+.idea
+
+#sqlite
+*.db
+
+.rdb
+
+# 图片资源
+static/
+
+temp/
+
+GMS-proto/
+
+README.md
