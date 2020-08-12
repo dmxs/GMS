@@ -3,11 +3,15 @@ package service
 import (
 	"GMS/pkg/common"
 	"GMS/pkg/logger"
+	"GMS/srv/user/dao"
 	"GMS/srv/user/model"
 	"GMS/srv/user/proto"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"strconv"
 )
+
 
 //Post 添加用户
 func (s *Service) Post(ctx context.Context, req *user.PostReq, resp *user.PostResp) (err error) {
@@ -113,4 +117,10 @@ func dtoUserMList2PbUserItem(userMList []*model.User) (userItems []*user.UserIte
 func parseID2Str(id uint) (str string) {
 	str = strconv.FormatUint(uint64(id), 10)
 	return
+}
+
+// Sum256 sha256加密
+func Sum256(data string) string {
+	hash := sha256.Sum256([]byte(data))
+	return hex.EncodeToString(hash[:])
 }

@@ -62,3 +62,8 @@ func newDB() *gormplus.DB {
 		DSN:   c.MySQL.DSN(),
 	})
 }
+
+//GetDao .
+func GetDao() *Dao {
+	return dao
+}
