@@ -3,7 +3,6 @@ package service
 import (
 	"GMS/pkg/common"
 	"GMS/pkg/logger"
-	"GMS/srv/user/dao"
 	"GMS/srv/user/model"
 	"GMS/srv/user/proto"
 	"context"
@@ -11,7 +10,6 @@ import (
 	"encoding/hex"
 	"strconv"
 )
-
 
 //Post 添加用户
 func (s *Service) Post(ctx context.Context, req *user.PostReq, resp *user.PostResp) (err error) {

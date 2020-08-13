@@ -1,7 +1,6 @@
 package router
 
 import (
-	"GMS/srv/api/middleware"
 	"GMS/srv/api/service"
 	"github.com/gin-gonic/gin"
 )
@@ -9,7 +8,7 @@ import (
 func NewRouter() *gin.Engine {
 	router := gin.Default()
 
-	router.Use(middleware.CrossOriginMiddleware())
+	//router.Use(middleware.CrossOriginMiddleware())
 	//router.Use(middleware.UserAuthMiddleware())
 
 	/*
@@ -26,10 +25,7 @@ func NewRouter() *gin.Engine {
 	     token          = 1*<any CHAR except CTLs or separators>
 	*/
 
-	router.Handle("GET","/:",service.RPC)
-	router.Handle("POST","/:",service.RPC)
-	router.Handle("DELETE","/:",service.RPC)
-	router.Handle("PUT","/:",service.RPC)
+	router.Use(service.RPC)
 
 	return router
 }

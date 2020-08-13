@@ -45,7 +45,7 @@ func Init() {
 		return
 	}
 
-	dao = &Dao{ DB: newDB()}
+	dao = &Dao{DB: newDB()}
 
 	if err := dao.Ping(); err != nil {
 		logger.Info(err.Error())

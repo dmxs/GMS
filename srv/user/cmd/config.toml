@@ -6,15 +6,15 @@ root_package_slash = 3
 [mysql]
 debug = true
 # 连接地址
-host = "182.61.3.243"
+host = "127.0.0.1"
 # 连接端口
 port= 3306
 # 用户名
-user = "test"
+user = "root"
 # 密码
-password = "888"
+password = "123456"
 # 数据库
-db_name = "nezha_chat_user"
+db_name = "GMS"
 # 连接参数
 parameters = "charset=utf8mb4&parseTime=True&loc=Local&allowNativePasswords=true"
 

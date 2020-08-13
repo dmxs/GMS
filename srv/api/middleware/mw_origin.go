@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"GMS/pkg/common"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,14 +25,5 @@ func CrossOriginMiddleware(skipper ...SkipperFunc) gin.HandlerFunc {
 		c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-Token, X-Client")
 		c.Header("Access-Control-Allow-Credentials", "true")
-
-		if c.Request.Method == "OPTIONS" {
-			return
-		}
-
-		if c.Request.Method != "POST" {
-			common.ResFailCode(c, common.StatusMethodNotAllowed,common.MsgMethodNotAllowed)
-			return
-		}
 	}
 }

@@ -1,9 +1,14 @@
-package cmd
+package main
 
 import (
+	"GMS/pkg/logger"
 	"GMS/srv/api/router"
 	"log"
 )
+
+func init() {
+	logger.InitLog()
+}
 
 func main() {
 	r := router.NewRouter()

@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	TokenKey = "Access-Token"
-	UserKey = "User-Info"
-	ExpTimeout = 24*60*60 // token过期时间 second
+	TokenKey   = "Access-Token"
+	UserKey    = "User-Info"
+	ExpTimeout = 24 * 60 * 60 // token过期时间 second
 )
 
 func UserAuthMiddleware(skipper ...SkipperFunc) gin.HandlerFunc {

@@ -1,5 +1,5 @@
 package common
 
 const (
-	Namespace = "com.mtbsystem."
+	Namespace = "com.gms."
 )

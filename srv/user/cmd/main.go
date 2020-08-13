@@ -2,19 +2,13 @@ package main
 
 import (
 	"GMS/pkg/logger"
-	"os"
-	"time"
-
-
-	"GMS/srv/user/dao"
-
-	"GMS/srv/user/proto"
-
-	"GMS/srv/user/service"
-
 	"GMS/srv/user/conf"
+	"GMS/srv/user/dao"
+	"GMS/srv/user/proto"
+	"GMS/srv/user/service"
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/service/grpc"
+	"time"
 )
 
 var (
@@ -22,9 +16,9 @@ var (
 )
 
 func init() {
-	confPath := os.Getenv("confPath")
+	logger.InitLog()
 
-	if err := conf.LoadGlobalConfig(confPath); err != nil {
+	if err := conf.LoadGlobalConfig("config.toml"); err != nil {
 		logger.Error(err.Error())
 		return
 	}

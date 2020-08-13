@@ -12,9 +12,7 @@ import (
 )
 
 var (
-	Handle    *zap.Logger
-	Encrypted bool // 是否加密
-
+	Handle  *zap.Logger
 	LogPath string
 )
 
@@ -64,8 +62,8 @@ func DebugF(format string, a ...interface{}) {
 	Handle.Debug(fmt.Sprintf(format, a...))
 }
 
-func InitLog(applicationPath string, encrypted bool) {
-	Encrypted = encrypted
+func InitLog() {
+	applicationPath, _ := os.Getwd()
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:    "time",
 		LevelKey:   "level",
