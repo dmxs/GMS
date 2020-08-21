@@ -20,7 +20,7 @@ const (
 )
 
 const (
-	MsgSuccess           = "version"
+	MsgSuccess           = "success"
 	MsgVersionLow        = "invalid version"
 	MsgUserNotExist      = "user not exist"
 	MsgInvalidPassword   = "invalid password"

@@ -34,5 +34,5 @@ url = "127.0.0.1:6831"
 service_name = "user_srv"
 
 [micro]
-name = "nezha.chat.user.srv.service"
+name = "gms.user.srv.service"
 version = "1"

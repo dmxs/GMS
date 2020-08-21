@@ -3,7 +3,7 @@ package main
 import (
 	"GMS/pkg/logger"
 	"GMS/srv/api/router"
-	"log"
+	"github.com/micro/go-micro/v2/web"
 )
 
 func init() {
@@ -11,8 +11,13 @@ func init() {
 }
 
 func main() {
-	r := router.NewRouter()
-	if err := r.Run("127.0.0.1:8080"); err != nil {
-		log.Print(err.Error())
+	service := web.NewService(
+		web.Name("gms.api.srv.service"),
+		web.Address(":8080"),
+		web.Handler(router.NewRouter()),
+	)
+
+	if err := service.Run(); err != nil {
+		logger.Error("start failed : " + err.Error())
 	}
 }
