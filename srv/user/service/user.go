@@ -2,6 +2,7 @@ package service
 
 import (
 	"GMS/pkg/common"
+	"GMS/pkg/convert"
 	"GMS/pkg/logger"
 	"GMS/srv/user/model"
 	"GMS/srv/user/proto"
@@ -12,56 +13,57 @@ import (
 )
 
 //Post 添加用户
-func (s *Service) Post(ctx context.Context, req *user.PostReq, resp *user.PostResp) (err error) {
-	var ok bool
-	_, ok, err = s.Dao.UserGetByUsername(req.Username)
-	if err != nil {
+func (s *Service) Post(ctx context.Context, req *user.PostReq, resp *user.PostResp) error {
+	if _, ok, err := s.dao.UserGetByUsername(req.Username); err != nil {
 		logger.Error(err.Error())
-		return
-	}
-
-	if ok {
+		return err
+	} else if ok {
 		logger.Info("user has registered")
 		resp.Error = &user.Error{Code: common.StatusUserHasRegistered, Msg: common.UserHasRegisteredMsg}
-		return
+		return nil
 	}
 
 	password := Sum256(req.Password)
 
-	user, err := s.Dao.UserPost(req.Username, password)
+	u, err := s.dao.UserPost(req.Username, password)
 	if err != nil {
 		logger.Error(err.Error())
-		return
+		return err
 	}
 
-	logger.Info("create user :" + user.Username)
-	return
+	logger.Info("create user :" + u.UserName)
+	return nil
 }
 
 //CheckPassword .
-func (s *Service) CheckPassword(ctx context.Context, req *user.CheckPasswordReq, resp *user.CheckPasswordResp) (err error) {
+func (s *Service) CheckPassword(ctx context.Context, req *user.CheckPasswordReq, resp *user.CheckPasswordResp) error {
 	password := Sum256(req.Password)
 
-	userM, ok, err := s.Dao.UserCheckPassword(req.Username, password)
+	u, ok, err := s.dao.UserCheckPassword(req.Username, password)
+
 	if err != nil {
 		logger.Error(err.Error())
-		return
+		return err
 	}
 
-	resp.Result = ok
-	if ok {
-		resp.User = &user.UserItem{
-			Id:       parseID2Str(userM.ID),
-			Username: userM.Username,
-			Img:      userM.Image,
-		}
+	if !ok {
+		resp.Result = false
+		resp.Error = &user.Error{Code: common.StatusServerError, Msg: common.MsgServerError}
+		return nil
 	}
-	return
+
+	resp.Result = true
+	resp.User = &user.UserItem {
+		Id:       parseID2Str(u.ID),
+		Username: u.UserName,
+		Img:      u.Image,
+	}
+	return nil
 }
 
 //GetList 获取用户列表
 func (s *Service) GetList(ctx context.Context, req *user.GetListReq, resp *user.GetListResp) (err error) {
-	userMList, err := s.Dao.UserGetList(req.Name, req.Ids)
+	userMList, err := s.dao.UserGetList(req.Name, req.Ids)
 	if err != nil {
 		logger.Error(err.Error())
 		resp.Error = &user.Error{
@@ -77,7 +79,7 @@ func (s *Service) GetList(ctx context.Context, req *user.GetListReq, resp *user.
 
 //Get 获取当前用户
 func (s *Service) Get(ctx context.Context, req *user.GetReq, resp *user.GetResp) (err error) {
-	userM, exist, err := s.Dao.UserGet(req.Id)
+	userM, exist, err := s.dao.UserGet(convert.ToInt(req.Id))
 	if err != nil {
 		logger.Error(err.Error())
 		resp.Error = &user.Error{
@@ -91,7 +93,7 @@ func (s *Service) Get(ctx context.Context, req *user.GetReq, resp *user.GetResp)
 	if resp.Result {
 		resp.User = &user.UserItem{
 			Id:       parseID2Str(userM.ID),
-			Username: userM.Username,
+			Username: userM.UserName,
 			Img:      userM.Image,
 		}
 	}
@@ -100,11 +102,10 @@ func (s *Service) Get(ctx context.Context, req *user.GetReq, resp *user.GetResp)
 }
 
 func dtoUserMList2PbUserItem(userMList []*model.User) (userItems []*user.UserItem) {
-
 	for _, userM := range userMList {
 		item := new(user.UserItem)
 		item.Id = parseID2Str(userM.ID)
-		item.Username = userM.Username
+		item.Username = userM.UserName
 		item.Img = userM.Image
 
 		userItems = append(userItems, item)

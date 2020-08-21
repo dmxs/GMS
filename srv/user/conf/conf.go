@@ -1,14 +1,24 @@
 package conf
 
 import (
+	"errors"
 	"fmt"
-
 	"github.com/BurntSushi/toml"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
 )
 
 var (
-	global *Config
+	Conf *Config
 )
+
+func InitConfig() error {
+	appPath ,_:= getCurrentPath()
+	err := LoadGlobalConfig(appPath + string(os.PathSeparator) + "config.toml")
+	return err
+}
 
 // LoadGlobalConfig 加载全局配置
 func LoadGlobalConfig(fpath string) error {
@@ -16,16 +26,16 @@ func LoadGlobalConfig(fpath string) error {
 	if err != nil {
 		return err
 	}
-	global = c
+	Conf = c
 	return nil
 }
 
 // GetGlobalConfig 获取全局配置
 func GetGlobalConfig() *Config {
-	if global == nil {
+	if Conf == nil {
 		return &Config{}
 	}
-	return global
+	return Conf
 }
 
 // ParseConfig 解析配置文件
@@ -98,4 +108,23 @@ type Etcd struct {
 type Micro struct {
 	Name    string `toml:"name"`
 	Version string `toml:"version"`
+}
+
+func getCurrentPath() (string, error) {
+	file, err := exec.LookPath(os.Args[0])
+	if err != nil {
+		return "", err
+	}
+	path, err := filepath.Abs(file)
+	if err != nil {
+		return "", err
+	}
+	i := strings.LastIndex(path, "/")
+	if i < 0 {
+		i = strings.LastIndex(path, "\\")
+	}
+	if i < 0 {
+		return "", errors.New("error: Can't find  or ")
+	}
+	return string(path[0 : i+1]), nil
 }

@@ -9,7 +9,7 @@ import (
 // UserPost create user
 func (d *Dao) UserPost(username string, password string) (user *model.User, err error) {
 	user = new(model.User)
-	user.Username = username
+	user.UserName = username
 	user.Password = password
 	err = d.DB.Create(user).Error
 	return
@@ -47,7 +47,7 @@ func (d *Dao) UserGetList(name string, ids []string) (user []*model.User, err er
 }
 
 //UserGet .
-func (d *Dao) UserGet(id string) (user *model.User, exist bool, err error) {
+func (d *Dao) UserGet(id int) (user *model.User, exist bool, err error) {
 	user = new(model.User)
 	db := d.DB.Where("id = ?", id)
 	exist, err = d.DB.FindOne(db, user)

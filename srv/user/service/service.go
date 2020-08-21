@@ -1,15 +1,21 @@
 package service
 
-import "GMS/srv/user/dao"
+import (
+	"GMS/srv/user/conf"
+	"GMS/srv/user/dao"
+)
 
 //Service .
 type Service struct {
-	Dao dao.Interface
+	c   *conf.Config
+	dao *dao.Dao
 }
 
 //New
-func New(daoIns dao.Interface) (service *Service) {
-	service = new(Service)
-	service.Dao = daoIns
-	return
+func New(c *conf.Config) (s *Service) {
+	s = &Service{
+		c:   c,
+		dao: dao.New(c),
+	}
+	return s
 }
