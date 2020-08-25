@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/micro/go-micro/v2/client"
-	microhttp "github.com/micro/go-plugins/client/http"
+	microhttp "github.com/micro/go-plugins/client/http/v2"
 	"io/ioutil"
 	"net/http"
 	"path"

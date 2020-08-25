@@ -9,9 +9,11 @@ require (
 	github.com/golang/protobuf v1.4.2
 	github.com/jinzhu/gorm v1.9.15
 	github.com/micro/cli v0.2.0
-	github.com/micro/go-micro v1.16.0
-	github.com/micro/go-micro/v2 v2.9.1-0.20200723075038-fbdf1f2c1c4c
-	github.com/micro/go-plugins v0.22.0
+	github.com/micro/go-micro/v2 v2.9.1
+	github.com/micro/go-plugins v1.5.1
+	//github.com/micro/go-plugins v0.22.0
+	github.com/micro/go-plugins/client/http/v2 v2.9.1
+	github.com/teris-io/shortid v0.0.0-20171029131806-771a37caa5cf // indirect
 	go.uber.org/zap v1.15.0
 	google.golang.org/protobuf v1.25.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
