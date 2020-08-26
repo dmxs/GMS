@@ -1,0 +1,38 @@
+loglevel = 5
+workspace = "/home/dj/workspace/github.com/nezha/nezha-chat-backend"
+root_package_slash = 3
+
+#mysql 参数配置
+[mysql]
+debug = true
+# 连接地址
+host = "127.0.0.1"
+# 连接端口
+port= 3306
+# 用户名
+user = "root"
+# 密码
+password = "123456"
+# 数据库
+db_name = "GMS"
+# 连接参数
+parameters = "charset=utf8mb4&parseTime=True&loc=Local&allowNativePasswords=true"
+
+[rabbitmq]
+user = "guest"
+password = "guest"
+host = "127.0.0.1"
+port = 5672
+
+[etcd]
+addrs = ["127.0.0.1:2379"]
+register_ttl = 15
+register_interval = 10
+
+[jaeger]
+url = "127.0.0.1:6831"
+service_name = "role_srv"
+
+[micro]
+name = "gms.role.srv.service"
+version = "1"

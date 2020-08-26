@@ -25,7 +25,7 @@ func NewRouter() *gin.Engine {
 	     token          = 1*<any CHAR except CTLs or separators>
 	*/
 
-	router.Use(service.RPC)
+	router.Use(service.API)
 
 	return router
 }

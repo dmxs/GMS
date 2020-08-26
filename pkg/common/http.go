@@ -8,26 +8,39 @@ import (
 
 const (
 	StatusSuccess           = 0   // 成功
+	//100 - 200 sys
 	StatusVersionLow        = 100 // 版本太旧，请升级
-	StatusUserNotExist      = 101 // 用户不存在
-	StatusInvalidPassword   = 102 // 用户密码不匹配
-	StatusUserHasRegistered = 103 // 用户已注册
-	StatusInvalidToken      = 122 // 无效TOKEN
-	StatusJsonError         = 141 // body中的json格式错误
-	StatusInvalidParam      = 142 // 部分参数为空
-	StatusServerError       = 400 // 服务器内部错误
-	StatusMethodNotAllowed  = 405 // 无效method
+	StatusMethodNotAllowed  = 101 // 无效method
+	StatusServerError       = 102 // 服务器内部错误
+	StatusJsonError         = 103 // body中的json格式错误
+	StatusInvalidParam      = 104 // 部分参数为空
+
+	//200 - 300 user
+	StatusUserNotExist      = 201 // 用户不存在
+	StatusInvalidPassword   = 202 // 用户密码不匹配
+	StatusUserHasRegistered = 203 // 用户已注册
+	StatusInvalidToken      = 204 // 无效TOKEN
+
+	//300 - 400 role
+	StatusRoleNotExist      = 301 // 角色不存在
 )
 
 const (
 	MsgSuccess           = "success"
+
+	//sys
 	MsgVersionLow        = "invalid version"
+	MsgMethodNotAllowed  = "method not allowed"
+	MsgServerError       = "server error"
+
+	//user
 	MsgUserNotExist      = "user not exist"
 	MsgInvalidPassword   = "invalid password"
-	UserHasRegisteredMsg = "user hs registered"
-	MsgServerError       = "server error"
+	MsgUserHasRegistered = "user hs registered"
 	MsgInvalidToken      = "invalid token"
-	MsgMethodNotAllowed  = "method not allowed"
+
+	//role
+	MsgRoleNotExist      = "role not exist"
 )
 
 //ResponseModel 响应数据,带参

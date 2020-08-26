@@ -19,7 +19,7 @@ func (s *Service) Post(ctx context.Context, req *user.PostReq, resp *user.PostRe
 		return err
 	} else if ok {
 		logger.Info("user has registered")
-		resp.Error = &user.Error{Code: common.StatusUserHasRegistered, Msg: common.UserHasRegisteredMsg}
+		resp.Error = &user.Error{Code: common.StatusUserHasRegistered, Msg: common.MsgUserHasRegistered}
 		return nil
 	}
 

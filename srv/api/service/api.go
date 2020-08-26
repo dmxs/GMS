@@ -19,7 +19,7 @@ var (
 	versionRe = regexp.MustCompilePOSIX("^v[0-9]+$")
 )
 
-func RPC(c *gin.Context) {
+func API(c *gin.Context) {
 	//解析
 	service, method := pathToReceiver(common.PrefixNamespace,common.SuffixNamespace, c.Request.URL.Path)
 	if service == "" || method == "" {
@@ -52,7 +52,7 @@ func RPC(c *gin.Context) {
 	var response json.RawMessage
 
 	//log
-	logger.InfoKV("RPC TRANSFER", logger.KV{"service": service, "method": method, "request": request})
+	logger.InfoKV("API TRANSFER", logger.KV{"service": service, "method": method, "request": request})
 
 	//NewRequest
 	microClient := microhttp.NewClient(client.ContentType("application/json"))
