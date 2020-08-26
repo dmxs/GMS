@@ -4,12 +4,12 @@ import (
 	"GMS/pkg/common"
 	"GMS/pkg/logger"
 	"GMS/srv/role/conf"
-	role "GMS/srv/role/proto"
+	"GMS/srv/role/proto/role"
 	"context"
 	"github.com/micro/go-micro/v2/errors"
 )
 
-func (s *Service) Get(ctx context.Context, req *role.InfoReq, reply *role.InfoReply) error {
+func (s *Service) Info(ctx context.Context, req *role.InfoReq, reply *role.InfoReply) error {
 	info, exist, err := s.dao.RoleGet(req.Id)
 	if !exist {
 		return errors.New(conf.Conf.Micro.Name,common.MsgRoleNotExist ,common.StatusRoleNotExist)

@@ -32,6 +32,7 @@ const (
 	MsgVersionLow        = "invalid version"
 	MsgMethodNotAllowed  = "method not allowed"
 	MsgServerError       = "server error"
+	MsgInvalidParam      = "invalid param"
 
 	//user
 	MsgUserNotExist      = "user not exist"
@@ -45,40 +46,44 @@ const (
 
 //ResponseModel 响应数据,带参
 type ResponseModel struct {
-	Result    bool        `json:"result"`
-	ErrorCode int         `json:"errorCode"`
-	Message   string      `json:"message"`
+	ErrorCode int         `json:"code"`
+	Message   string      `json:"detail"`
 	Data      interface{} `json:"data,omitempty"`
 }
 
 // 响应成功(带返回值)
 func ResSuccess(c *gin.Context, v interface{}) {
-	ret := ResponseModel{Result: true, ErrorCode: StatusSuccess, Message: MsgSuccess, Data: v}
+	ret := ResponseModel{ErrorCode: StatusSuccess, Message: MsgSuccess, Data: v}
 	ResJSON(c, http.StatusOK, &ret)
 }
 
 // 响应成功(不带返回值)
 func ResSuccessMsg(c *gin.Context) {
-	ret := ResponseModel{Result: true, ErrorCode: StatusSuccess, Message: MsgSuccess}
+	ret := ResponseModel{ErrorCode: StatusSuccess, Message: MsgSuccess}
 	ResJSON(c, http.StatusOK, &ret)
 }
 
 // 响应失败
 func ResFailCode(c *gin.Context, code int, msg string) {
-	ret := ResponseModel{Result: false, ErrorCode: code, Message: msg}
+	ret := ResponseModel{ErrorCode: code, Message: msg}
 	ResJSON(c, http.StatusOK, &ret)
 }
 
 //响应失败，带返回值
 func ResFailData(c *gin.Context, code int, msg string, v interface{}) {
-	ret := ResponseModel{Result: false, ErrorCode: code, Message: msg, Data: v}
+	ret := ResponseModel{ErrorCode: code, Message: msg, Data: v}
 	ResJSON(c, http.StatusOK, &ret)
 }
 
 // 传参异常
 func ResParamFail(c *gin.Context) {
-	ret := ResponseModel{Result: false, ErrorCode: StatusInvalidParam, Message: MsgSuccess}
+	ret := ResponseModel{ErrorCode: StatusInvalidParam, Message: MsgSuccess}
 	ResJSON(c, http.StatusOK, &ret)
+}
+
+func ResFailError(c *gin.Context, err error) {
+	c.JSON(http.StatusOK, err)
+	c.Abort()
 }
 
 // 响应JSON数据

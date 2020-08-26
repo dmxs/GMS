@@ -10,7 +10,7 @@ import (
 
 const (
 	PrefixNamespace = "gms."
-	SuffixNamespace = ".srv.service"
+	SuffixNamespace = ".srv.service.http"
 )
 
 func GetCurrentPath() (string, error) {

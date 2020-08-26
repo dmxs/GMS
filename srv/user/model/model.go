@@ -5,7 +5,7 @@ import (
 )
 
 type Base struct {
-	ID       uint       `json:"id"         gorm:"column:id; primary_key; auto_increment;"`
+	ID       int64      `json:"id"         gorm:"column:id; primary_key; auto_increment;"`
 	CreateAt *time.Time `json:"createTime" gorm:"column:created_at; not null; default:CURRENT_TIMESTAMP"`
 	UpdateAt *time.Time `json:"updateTime" gorm:"column:updated_at; not null; default:CURRENT_TIMESTAMP"`
 }

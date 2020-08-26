@@ -2,120 +2,50 @@ package service
 
 import (
 	"GMS/pkg/common"
-	"GMS/pkg/convert"
 	"GMS/pkg/logger"
 	"GMS/srv/user/model"
-	"GMS/srv/user/proto"
+	"GMS/srv/user/proto/role"
+	"GMS/srv/user/proto/user"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
-	"strconv"
+	"github.com/micro/go-micro/v2/errors"
 )
 
+func (s *Service) GetRole(ctx context.Context,id int64) (re model.RoleReply, err error){
+	//rpc
+	var reply *role.InfoReply
+	if reply, err = s.roleSvc.Info( ctx, &role.InfoReq{ Id:id } ); err != nil {
+		return
+	}
+
+	re.ID = reply.Id
+	re.Name = reply.Name
+
+	return
+}
+
 //Post 添加用户
-func (s *Service) Post(ctx context.Context, req *user.PostReq, resp *user.PostResp) error {
+func (s *Service) Post(ctx context.Context, req *user.PostReq, resp *user.PostReply) error {
 	if _, ok, err := s.dao.UserGetByUsername(req.Username); err != nil {
 		logger.Error(err.Error())
 		return err
 	} else if ok {
 		logger.Info("user has registered")
-		resp.Error = &user.Error{Code: common.StatusUserHasRegistered, Msg: common.MsgUserHasRegistered}
-		return nil
+		return errors.New(s.c.Micro.Name,common.MsgUserHasRegistered,common.StatusUserHasRegistered)
 	}
 
-	password := Sum256(req.Password)
-
-	u, err := s.dao.UserPost(req.Username, password)
+	u, err := s.dao.UserPost(req.Username, Sum256(req.Password))
 	if err != nil {
 		logger.Error(err.Error())
 		return err
 	}
 
 	logger.Info("create user :" + u.UserName)
+
+	resp.Id  = u.ID
+
 	return nil
-}
-
-//CheckPassword .
-func (s *Service) CheckPassword(ctx context.Context, req *user.CheckPasswordReq, resp *user.CheckPasswordResp) error {
-	password := Sum256(req.Password)
-
-	u, ok, err := s.dao.UserCheckPassword(req.Username, password)
-
-	if err != nil {
-		logger.Error(err.Error())
-		return err
-	}
-
-	if !ok {
-		resp.Result = false
-		resp.Error = &user.Error{Code: common.StatusServerError, Msg: common.MsgServerError}
-		return nil
-	}
-
-	resp.Result = true
-	resp.User = &user.UserItem {
-		Id:       parseID2Str(u.ID),
-		Username: u.UserName,
-		Img:      u.Image,
-	}
-	return nil
-}
-
-//GetList 获取用户列表
-func (s *Service) GetList(ctx context.Context, req *user.GetListReq, resp *user.GetListResp) (err error) {
-	userMList, err := s.dao.UserGetList(req.Name, req.Ids)
-	if err != nil {
-		logger.Error(err.Error())
-		resp.Error = &user.Error{
-			Code: 500,
-			Msg:  err.Error(),
-		}
-		return
-	}
-
-	resp.List = dtoUserMList2PbUserItem(userMList)
-	return
-}
-
-//Get 获取当前用户
-func (s *Service) Get(ctx context.Context, req *user.GetReq, resp *user.GetResp) (err error) {
-	userM, exist, err := s.dao.UserGet(convert.ToInt(req.Id))
-	if err != nil {
-		logger.Error(err.Error())
-		resp.Error = &user.Error{
-			Code: 500,
-			Msg:  err.Error(),
-		}
-		return
-	}
-
-	resp.Result = exist
-	if resp.Result {
-		resp.User = &user.UserItem{
-			Id:       parseID2Str(userM.ID),
-			Username: userM.UserName,
-			Img:      userM.Image,
-		}
-	}
-
-	return
-}
-
-func dtoUserMList2PbUserItem(userMList []*model.User) (userItems []*user.UserItem) {
-	for _, userM := range userMList {
-		item := new(user.UserItem)
-		item.Id = parseID2Str(userM.ID)
-		item.Username = userM.UserName
-		item.Img = userM.Image
-
-		userItems = append(userItems, item)
-	}
-	return
-}
-
-func parseID2Str(id uint) (str string) {
-	str = strconv.FormatUint(uint64(id), 10)
-	return
 }
 
 // Sum256 sha256加密

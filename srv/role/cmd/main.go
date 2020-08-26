@@ -3,6 +3,8 @@ package main
 import (
 	"GMS/pkg/logger"
 	"GMS/srv/role/conf"
+	"GMS/srv/role/proto/role"
+	srv "GMS/srv/role/service"
 	"github.com/micro/go-micro/v2/service"
 	"github.com/micro/go-micro/v2/service/grpc"
 	"time"
@@ -26,6 +28,11 @@ func main() {
 		service.RegisterInterval(time.Second*10),
 		//micro.WrapHandler(opentracing.NewHandlerWrapper(openTrace.GlobalTracer())),
 	)
+	//handle
+	if err := role.RegisterRoleHandler(svc.Server(), srv.New(conf.Conf)); err != nil {
+		logger.Error(err.Error())
+		return
+	}
 
 	svc.Run()
 }

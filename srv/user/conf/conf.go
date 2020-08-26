@@ -55,9 +55,14 @@ type Config struct {
 	Micro            Micro    `toml:"micro"`
 	RabbitMq         RabbitMq `toml:"rabbitmq"`
 	Jaeger           Jaeger   `toml:"jaeger"`
+	Remote           Remote   `toml:"remote"`
 	LogLevel         int8     `toml:"loglevel"`
 	Workspace        string   `toml:"workspace"`
 	RootPackageSlash int      `toml:"root_package_slash"`
+}
+
+type Remote struct {
+	Role string `toml:"role"`
 }
 
 //Jaeger .

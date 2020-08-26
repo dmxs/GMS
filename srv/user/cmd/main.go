@@ -3,8 +3,8 @@ package main
 import (
 	"GMS/pkg/logger"
 	"GMS/srv/user/conf"
-	"GMS/srv/user/proto"
-	"GMS/srv/user/router"
+	"GMS/srv/user/http"
+	"GMS/srv/user/proto/user"
 	srv "GMS/srv/user/service"
 	"github.com/micro/go-micro/v2/service"
 	"github.com/micro/go-micro/v2/service/grpc"
@@ -46,8 +46,10 @@ func main() {
 		//micro.WrapHandler(opentracing.NewHandlerWrapper(openTrace.GlobalTracer())),
 	)
 
+	svr := srv.New(conf.Conf, grpcSvc.Client())
+
 	//handle
-	if err := user.RegisterUserHandler(grpcSvc.Server(), srv.New(conf.Conf)); err != nil {
+	if err := user.RegisterUserHandler(grpcSvc.Server(), svr); err != nil {
 		logger.Error(err.Error())
 		return
 	}
@@ -56,10 +58,15 @@ func main() {
 	webSvc := web.NewService(
 		web.Name(conf.Conf.Micro.Name + ".http"),
 		web.Address(":8081"),
-		web.Handler(router.NewRouter()),
+		web.Handler(http.NewRouter(svr)),
+		web.Metadata(map[string]string{"protocol" : "http"}),
 	)
 
-	go grpcSvc.Run()
+	logger.Info(conf.Conf.Micro.Name + ".http")
 
-	webSvc.Run()
+	//go grpcSvc.Run()
+
+	if err := webSvc.Run(); err != nil {
+		logger.Error(err.Error())
+	}
 }

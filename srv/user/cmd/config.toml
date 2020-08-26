@@ -36,3 +36,6 @@ service_name = "user_srv"
 [micro]
 name = "gms.user.srv.service"
 version = "1"
+
+[remote]
+role = "gms.role.srv.service"
