@@ -1,3 +1,3 @@
 # GMS
-study go-micro
+study go-micro,
 it's a challenge(dog)
