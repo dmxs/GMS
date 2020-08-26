@@ -11,7 +11,6 @@ require (
 	github.com/micro/cli v0.2.0
 	github.com/micro/go-micro/v2 v2.9.1
 	github.com/micro/go-plugins v1.5.1
-	//github.com/micro/go-plugins v0.22.0
 	github.com/micro/go-plugins/client/http/v2 v2.9.1
 	github.com/teris-io/shortid v0.0.0-20171029131806-771a37caa5cf // indirect
 	go.uber.org/zap v1.15.0
