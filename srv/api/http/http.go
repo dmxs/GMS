@@ -1,9 +1,25 @@
-package router
+package http
 
 import (
-	"GMS/srv/api/service"
+	"GMS/pkg/convert"
+	"GMS/pkg/logger"
+	"GMS/srv/api/conf"
 	"github.com/gin-gonic/gin"
+	"github.com/micro/go-micro/v2/web"
 )
+
+func Init(c *conf.Config) {
+	//web server
+	service := web.NewService(
+		web.Name(conf.Conf.Micro.Name),
+		web.Address(":" + convert.ToString(conf.Conf.Http.Port)),
+		web.Handler(NewRouter()),
+	)
+
+	if err := service.Run(); err != nil {
+		logger.Error("start failed : " + err.Error())
+	}
+}
 
 func NewRouter() *gin.Engine {
 	router := gin.Default()
@@ -25,7 +41,7 @@ func NewRouter() *gin.Engine {
 	     token          = 1*<any CHAR except CTLs or separators>
 	*/
 
-	router.Use(service.API)
+	router.Use(API)
 
 	return router
 }

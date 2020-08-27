@@ -1,0 +1,11 @@
+[etcd]
+addrs = ["127.0.0.1:2379"]
+register_ttl = 15
+register_interval = 10
+
+[micro]
+name = "gms.api.srv.service"
+version = "1"
+
+[http]
+port = 8080

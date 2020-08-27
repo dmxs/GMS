@@ -53,22 +53,16 @@ type Config struct {
 	MySQL            MySQL    `toml:"mysql"`
 	Etcd             Etcd     `toml:"etcd"`
 	Micro            Micro    `toml:"micro"`
-	RabbitMq         RabbitMq `toml:"rabbitmq"`
-	Jaeger           Jaeger   `toml:"jaeger"`
 	Remote           Remote   `toml:"remote"`
-	LogLevel         int8     `toml:"loglevel"`
-	Workspace        string   `toml:"workspace"`
-	RootPackageSlash int      `toml:"root_package_slash"`
+	Http             Http     `toml:"http"`
+}
+
+type Http struct {
+	Port int `toml:"port"`
 }
 
 type Remote struct {
 	Role string `toml:"role"`
-}
-
-//Jaeger .
-type Jaeger struct {
-	ServiceName string `toml:"service_name"`
-	URL         string `toml:"url"`
 }
 
 //MySQL .
@@ -86,20 +80,6 @@ type MySQL struct {
 func (a MySQL) DSN() string {
 	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?%s",
 		a.User, a.Password, a.Host, a.Port, a.DBName, a.Parameters)
-}
-
-//RabbitMq .
-type RabbitMq struct {
-	User     string `toml:"user"`
-	Password string `toml:"password"`
-	Host     string `toml:"host"`
-	Port     int    `toml:"port"`
-}
-
-//DSN .
-func (a RabbitMq) DSN() string {
-	return fmt.Sprintf("amqp://%s:%s@%s:%d/",
-		a.User, a.Password, a.Host, a.Port)
 }
 
 //Etcd .

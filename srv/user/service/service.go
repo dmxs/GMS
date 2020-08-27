@@ -9,17 +9,17 @@ import (
 
 //Service .
 type Service struct {
-	c   *conf.Config
-	dao *dao.Dao
+	c       *conf.Config
+	dao     *dao.Dao
 	roleSvc role.RoleService
 }
 
 //New
 func New(c *conf.Config, client client.Client) (s *Service) {
 	s = &Service{
-		c:   c,
-		dao: dao.New(c),
-		roleSvc : role.NewRoleService(c.Remote.Role,client),
+		c:       c,
+		dao:     dao.New(c),
+		roleSvc: role.NewRoleService(c.Remote.Role, client),
 	}
 	return s
 }

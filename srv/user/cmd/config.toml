@@ -1,7 +1,3 @@
-loglevel = 5
-workspace = "/home/dj/workspace/github.com/nezha/nezha-chat-backend"
-root_package_slash = 3
-
 #mysql 参数配置
 [mysql]
 debug = true
@@ -18,20 +14,10 @@ db_name = "GMS"
 # 连接参数
 parameters = "charset=utf8mb4&parseTime=True&loc=Local&allowNativePasswords=true"
 
-[rabbitmq]
-user = "guest"
-password = "guest"
-host = "127.0.0.1"
-port = 5672
-
 [etcd]
 addrs = ["127.0.0.1:2379"]
 register_ttl = 15
 register_interval = 10
-
-[jaeger]
-url = "127.0.0.1:6831"
-service_name = "user_srv"
 
 [micro]
 name = "gms.user.srv.service"
@@ -39,3 +25,6 @@ version = "1"
 
 [remote]
 role = "gms.role.srv.service"
+
+[http]
+port = 8081

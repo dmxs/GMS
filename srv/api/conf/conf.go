@@ -15,7 +15,7 @@ var (
 )
 
 func InitConfig() error {
-	appPath ,_:= getCurrentPath()
+	appPath, _ := getCurrentPath()
 	err := LoadGlobalConfig(appPath + string(os.PathSeparator) + "config.toml")
 	return err
 }
@@ -50,9 +50,14 @@ func ParseConfig(fpath string) (*Config, error) {
 
 //Config .
 type Config struct {
-	MySQL            MySQL    `toml:"mysql"`
-	Etcd             Etcd     `toml:"etcd"`
-	Micro            Micro    `toml:"micro"`
+	MySQL    MySQL `toml:"mysql"`
+	Etcd     Etcd  `toml:"etcd"`
+	Micro    Micro `toml:"micro"`
+	Http     Http  `toml:"http"`
+}
+
+type Http struct {
+	Port int `toml:"port"`
 }
 
 //MySQL .
@@ -71,6 +76,7 @@ func (a MySQL) DSN() string {
 	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?%s",
 		a.User, a.Password, a.Host, a.Port, a.DBName, a.Parameters)
 }
+
 
 //Etcd .
 type Etcd struct {
