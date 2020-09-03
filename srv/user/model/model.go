@@ -16,6 +16,7 @@ type User struct {
 	UserName string `json:"userName" gorm:"column:username"`
 	Password string `json:"password" gorm:"column:password"`
 	Image    string `json:"image"    gorm:"column:image"`
+	RoleID   int64  `json:"roleID"   gorm:"column:role_id"`
 }
 
 //TableName .

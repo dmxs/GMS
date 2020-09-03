@@ -54,7 +54,7 @@ func getRole(c *gin.Context) {
 
 	//查询角色
 	var reply model.RoleReply
-	if reply, err = svr.GetRole(c, info.ID); err != nil {
+	if reply, err = svr.GetRole(c, info.RoleID); err != nil {
 		common.ResFailError(c,err)
 		return
 	}

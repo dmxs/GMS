@@ -2,13 +2,13 @@
 [mysql]
 debug = true
 # 连接地址
-host = "127.0.0.1"
+host = "101.37.172.146"
 # 连接端口
 port= 3306
 # 用户名
 user = "root"
 # 密码
-password = "123456"
+password = "Cwl8425642."
 # 数据库
 db_name = "GMS"
 # 连接参数
